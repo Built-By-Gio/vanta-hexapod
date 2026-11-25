@@ -1,0 +1,25 @@
+SPDX-License-Identifier: CERN-OHL-W-2.0
+
+Hardware licence notice for VANTA
+
+Copyright (c) 2026 Gio (Built-By-Gio)
+Parts of the mechanical design: Copyright ggldnl, Hexapod-Hardware
+(https://github.com/ggldnl/Hexapod-Hardware), see CREDITS.md.
+
+The hardware design files in this repository are licensed under the
+CERN Open Hardware Licence Version 2 - Weakly Reciprocal (CERN-OHL-W-2.0).
+This covers the printable and CAD files (.stl, .3mf, .step, .glb, .urdf,
+.json geometry data), the carrier PCB design (KiCad project, netlist,
+Gerbers, fab files, schematic PDF) and the assembly guide PDF.
+
+The full licence text is at: https://ohwr.org/cern_ohl_w_v2.txt
+
+You may redistribute and modify this source and make products using it under
+the terms of the CERN-OHL-W v2. This source is distributed WITHOUT ANY EXPRESS
+OR IMPLIED WARRANTY, INCLUDING OF MERCHANTABILITY, SATISFACTORY QUALITY AND
+FITNESS FOR A PARTICULAR PURPOSE. Please see the CERN-OHL-W v2 for applicable
+conditions.
+
+Source location: this repository. As the licence asks, if you share a modified
+version, keep this notice and CREDITS.md with it and make your modified source
+available.

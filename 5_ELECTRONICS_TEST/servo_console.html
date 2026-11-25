@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VANTA servo console</title>
+<style>
+  :root {
+    --bg: #111214; --panel: #191a1d; --line: #2a2c31; --ink: #e6e6e3; --dim: #8b8d93;
+    --live: #f0782a; --off: #4a4c52; --bad: #e0483c;
+    font-family: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-size: 13px; }
+  header {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    padding: 12px 16px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--bg); z-index: 2;
+  }
+  h1 { font-size: 15px; margin: 0 14px 0 0; letter-spacing: .08em; }
+  h1 b { color: var(--live); }
+  button {
+    font: inherit; color: var(--ink); background: var(--panel); border: 1px solid var(--line);
+    padding: 6px 10px; cursor: pointer;
+  }
+  button:hover { border-color: var(--dim); }
+  button:disabled { opacity: .35; cursor: default; }
+  #kill { background: var(--bad); border-color: var(--bad); color: #fff; font-weight: 600; }
+  #status { color: var(--dim); margin-left: auto; }
+  #status.on { color: var(--live); }
+  main { padding: 8px 16px 24px; }
+  .row {
+    display: grid; grid-template-columns: 54px 120px 1fr 62px auto; align-items: center; gap: 10px;
+    padding: 7px 0; border-bottom: 1px solid var(--line);
+  }
+  .ch { color: var(--dim); }
+  .row.live .ch { color: var(--live); }
+  .name { font: inherit; background: transparent; color: var(--ink); border: 0; border-bottom: 1px dashed var(--line); padding: 2px 0; width: 100%; }
+  input[type=range] { width: 100%; accent-color: var(--off); }
+  .row.live input[type=range] { accent-color: var(--live); }
+  .us { text-align: right; font-variant-numeric: tabular-nums; }
+  .row:not(.live) .us { color: var(--dim); }
+  .btns { display: flex; gap: 4px; }
+  .btns button { padding: 4px 7px; }
+  footer { padding: 0 16px 16px; color: var(--dim); }
+  #log { white-space: pre; height: 6.5em; overflow: auto; border: 1px solid var(--line); padding: 6px 8px; margin-top: 8px; color: var(--dim); }
+  @media (max-width: 640px) {
+    .row { grid-template-columns: 44px 1fr 56px; }
+    .row input[type=range] { grid-column: 1 / -1; }
+    .btns { grid-column: 1 / -1; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>VANTA <b>//</b> SERVOS</h1>
+  <button id="connect">Connect COM port</button>
+  <button id="kill" disabled>ALL OFF</button>
+  <button id="center" disabled>All live → 1500</button>
+  <span id="status">not connected</span>
+</header>
+<main id="rows"></main>
+<footer>
+  Every channel starts OFF. Moving a slider or pressing a button powers that channel.
+  ← → on a focused slider = 1µs. Names are saved in this browser.
+  <div id="log"></div>
+</footer>
+<script>
+const MIN = 500, MAX = 2500, CHANNELS = 16;
+const names = JSON.parse(safeGet("vanta-servo-names") || "{}");
+const rows = document.getElementById("rows");
+const log = document.getElementById("log");
+let port, writer, pending = {}, timer;
+
+function safeGet(k) { try { return localStorage.getItem(k); } catch { return null; } }
+function safeSet(k, v) { try { localStorage.setItem(k, v); } catch {} }
+
+function say(s) {
+  log.textContent += s + "\n";
+  log.scrollTop = log.scrollHeight;
+}
+
+async function send(line) {
+  if (!writer) return;
+  await writer.write(new TextEncoder().encode(line + "\n"));
+}
+
+// sliders fire faster than a servo cares about; send the latest value per channel every 20ms
+function queue(ch, us) {
+  pending[ch] = us;
+  if (!timer) timer = setTimeout(flush, 20);
+}
+async function flush() {
+  timer = null;
+  const batch = pending; pending = {};
+  for (const ch in batch) {
+    // ALL OFF or a channel's "off" may have landed while this batch was going out: don't power it back up
+    if (!rows.querySelector(`.row[data-ch="${ch}"]`).classList.contains("live")) continue;
+    await send(`S ${ch} ${batch[ch]}`);
+  }
+}
+
+for (let ch = CHANNELS - 1; ch >= 0; ch--) {
+  const r = document.createElement("div");
+  r.className = "row";
+  r.innerHTML = `
+    <span class="ch">CH ${String(ch).padStart(2, "0")}</span>
+    <input class="name" placeholder="name" value="${names[ch] || ""}">
+    <input type="range" min="${MIN}" max="${MAX}" step="1" value="1500">
+    <span class="us">off</span>
+    <span class="btns">
+      <button data-d="-50">−50</button><button data-d="-10">−10</button>
+      <button data-set="1500">1500</button>
+      <button data-d="10">+10</button><button data-d="50">+50</button>
+      <button data-off>off</button>
+    </span>`;
+  const slider = r.querySelector("input[type=range]");
+  const us = r.querySelector(".us");
+  const set = v => {
+    v = Math.max(MIN, Math.min(MAX, v));
+    slider.value = v; us.textContent = v; r.classList.add("live");
+    queue(ch, v);
+  };
+  slider.addEventListener("input", () => set(+slider.value));
+  r.querySelectorAll("[data-d]").forEach(b => b.onclick = () => set(+slider.value + +b.dataset.d));
+  r.querySelector("[data-set]").onclick = () => set(1500);
+  r.querySelector("[data-off]").onclick = () => {
+    delete pending[ch]; r.classList.remove("live"); us.textContent = "off"; send(`O ${ch}`);
+  };
+  r.querySelector(".name").addEventListener("change", e => {
+    names[ch] = e.target.value; safeSet("vanta-servo-names", JSON.stringify(names));
+  });
+  r.dataset.ch = ch;
+  rows.appendChild(r);
+}
+
+document.getElementById("kill").onclick = () => {
+  pending = {};
+  document.querySelectorAll(".row").forEach(r => { r.classList.remove("live"); r.querySelector(".us").textContent = "off"; });
+  send("X");
+};
+document.getElementById("center").onclick = () => {
+  document.querySelectorAll(".row.live").forEach(r => {
+    r.querySelector("input[type=range]").value = 1500; r.querySelector(".us").textContent = 1500; queue(r.dataset.ch, 1500);
+  });
+};
+
+document.getElementById("connect").onclick = async () => {
+  if (!("serial" in navigator)) { say("This browser has no Web Serial. Open the page in Chrome or Edge."); return; }
+  try {
+    port = await navigator.serial.requestPort();
+    await port.open({ baudRate: 115200 });
+  } catch (e) { say("connect failed: " + e.message); return; }
+  writer = port.writable.getWriter();
+  document.getElementById("status").textContent = "connected";
+  document.getElementById("status").className = "on";
+  document.querySelectorAll("header button:disabled").forEach(b => b.disabled = false);
+  document.getElementById("connect").disabled = true;
+  readLoop();
+};
+
+async function readLoop() {
+  const reader = port.readable.pipeThrough(new TextDecoderStream()).getReader();
+  let buf = "";
+  try {
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      buf += value;
+      let i;
+      while ((i = buf.indexOf("\n")) >= 0) { say(buf.slice(0, i).trim()); buf = buf.slice(i + 1); }
+    }
+  } catch (e) {
+    say("disconnected: " + e.message);
+    document.getElementById("status").textContent = "disconnected";
+    document.getElementById("status").className = "";
+  }
+}
+</script>
+</body>
+</html>

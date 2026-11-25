@@ -1,0 +1,23 @@
+Comment,Designator,Footprint,Manufacturer Part / notes,Qty
+"PT 1,5/2-5.0-H","J1,J2,J3","TerminalBlock_Phoenix_PT-1,5-2-5.0-H_1x02_P5.00mm_Horizontal","Phoenix PT 1,5/2-5,0-H push-in, 16 AWG ok",3
+470 µF 16 V,"C1,C2",CP_Elec_8x10,"SMD electrolytic 8×10.2, e.g. Panasonic FK 470µF 16V",2
+1 kΩ,"R1,R5",R_0603_1608Metric,LED resistor,2
+orange,D1,LED_0603_1608Metric,V_SERVO present,1
+TPS563201DDC,U1,TSOT-23-6,TI TPS563201DDCR,1
+10 µF 25 V,"C3,C4",C_1206_3216Metric,"Buck input, X5R/X7R",2
+100 nF 50 V,C5,C_0603_1608Metric,Buck input HF,1
+100 kΩ,R2,R_0603_1608Metric,"EN pull-up, buck always on",1
+100 nF,"C6,C9,C11",C_0603_1608Metric,Bootstrap; PCA VDD decoupling,3
+3.3 µH,L1,L_Bourns_SRP7028A_7.3x6.6mm,Bourns SRP7028A-3R3M,1
+22 µF 10 V,"C7,C8",C_1206_3216Metric,"Buck output, X5R/X7R",2
+56.2 kΩ 1%,R3,R_0603_1608Metric,Feedback top: 0.768 × (1 + 56.2/10) = 5.08 V,1
+10 kΩ 1%,R4,R_0603_1608Metric,Feedback bottom,1
+green,D2,LED_0603_1608Metric,+5V present,1
+"MPT 0,5/4-2.54",J4,"TerminalBlock_Phoenix_MPT-0,5-4-2.54_1x04_P2.54mm_Horizontal","Phoenix MPT 0,5/4-2,54",1
+PinHeader 2×5,J6,PinHeader_2x05_P2.54mm_Vertical,2×5 2.54 mm male header,1
+4.7 kΩ,"R6,R7",R_0603_1608Metric,I2C-3 SCL pull-up; I2C-3 SDA pull-up,2
+10 kΩ,R8,R_0603_1608Metric,"OE pull-down, outputs enabled by default",1
+PCA9685PW,"U2,U3",TSSOP-28_4.4x9.7mm_P0.65mm,"NXP PCA9685PW,118",2
+10 µF,"C10,C12",C_1206_3216Metric,PCA VDD bulk,2
+220 Ω,"R9,R10,R11,R12,R13,R14,R15,R16,R17,R18,R19,R20,R21,R22,R23,R24,R25,R26",R_0603_1608Metric,Servo signal series resistor,18
+servo header,"J7,J8,J9,J10,J11,J12,J13,J14,J15,J16,J17,J18,J19,J20,J21,J22,J23,J24",PinHeader_1x03_P2.54mm_Vertical,1×3 2.54 mm male header,18

@@ -1,0 +1,4 @@
+(version 1)
+(rule "single spoke ok on outer pours"
+  (condition "A.Type == 'Pad' && B.Type == 'Zone'")
+  (constraint min_resolved_spokes 1))

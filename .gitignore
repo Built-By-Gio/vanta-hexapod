@@ -1,0 +1,49 @@
+﻿# OS / editor junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Python / build output
+__pycache__/
+*.pyc
+.venv/
+node_modules/
+build/
+dist/
+*.log
+
+# Blender / KiCad backups and local state
+*.blend1
+*.kicad_prl
+*-backups/
+fp-info-cache
+.history/
+
+# Large rendered video (not in the repo)
+*.mp4
+
+# Working notes, not part of the project
+tasks/
+.[Cc]laude/
+[Cc][Ll][Aa][Uu][Dd][Ee].md
+AGENTS.md
+HANDOFF.md
+jobs*.txt
+
+# Old development scratch (renders, job lists, superseded parts)
+archive/
+
+# Third-party images (store listings, style reference) and other reference screenshots
+reference/
+
+# Font files without licence files
+7_VIDEO/assembly_video_src/fonts/
+
+# Proposals / applications and docs that print a full name
+docs/
+
+# Photos: held back for now (privacy, and embedded provenance metadata to be resolved)
+photos/
+
+# Outdated Blender rig; its saved file-browser state holds a local user path
+2_BLENDER/

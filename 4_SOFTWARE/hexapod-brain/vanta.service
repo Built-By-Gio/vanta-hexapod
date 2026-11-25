@@ -1,0 +1,14 @@
+[Unit]
+Description=VANTA hexapod
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=gio
+WorkingDirectory=/home/gio/hexapod-brain
+ExecStart=/home/gio/vanta-venv/bin/python sim.py --robot
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
