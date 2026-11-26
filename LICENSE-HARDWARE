@@ -12,7 +12,8 @@ This covers the printable and CAD files (.stl, .3mf, .step, .glb, .urdf,
 .json geometry data), the carrier PCB design (KiCad project, netlist,
 Gerbers, fab files, schematic PDF) and the assembly guide PDF.
 
-The full licence text is at: https://ohwr.org/cern_ohl_w_v2.txt
+The full licence text is in CERN-OHL-W-2.0.txt in this repository
+(official source: https://ohwr.org/cern_ohl_w_v2.txt).
 
 You may redistribute and modify this source and make products using it under
 the terms of the CERN-OHL-W v2. This source is distributed WITHOUT ANY EXPRESS

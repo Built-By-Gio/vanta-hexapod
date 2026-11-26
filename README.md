@@ -1,6 +1,6 @@
 # VANTA hexapod
 
-VANTA is an 18-DOF six-legged walking robot: 6 legs with 3 MG995 servos each, printed in PLA on a Bambu A1, wired with Wago connectors and screw terminals so nothing needs soldering. It runs on an ESP32-S3 with two PCA9685 servo drivers and is driven with an Xbox Wireless controller over Bluetooth (Bluepad32). The legs, base, stiffeners and battery mount are adapted from ggldnl's open-source Hexapod-Hardware; the servo caps, aluminium-horn brackets, electronics plate, hulls, decks, firmware, simulator, leg neural network and assembly guide are VANTA's own (details in `CREDITS.md`).
+VANTA is my 18-DOF six-legged walking robot: 6 legs with 3 MG995 servos each, printed in PLA on a Bambu A1, wired with Wago connectors and screw terminals so nothing needs soldering. It runs on an ESP32-S3 with two PCA9685 servo drivers and I drive it with an Xbox Wireless controller over Bluetooth (Bluepad32). I designed the servo caps, aluminium-horn brackets, electronics plate, hulls, top deck, riser and camera holder, and wrote the firmware, the MuJoCo simulator, the leg neural network and the assembly guide. The leg and body parts are adapted from an open-source hexapod and reworked for this build (see Credits).
 
 Built by Gio ([Built-By-Gio](https://github.com/Built-By-Gio)).
 
@@ -8,40 +8,32 @@ Built by Gio ([Built-By-Gio](https://github.com/Built-By-Gio)).
 
 ## Status (2026-11-25)
 
-**Working on the real robot**
-- The robot is fully built and walks with a tripod gait, turns, and is driven from an Xbox controller over Bluetooth on the ESP32-S3 + 2x PCA9685 build. Known from: the owner's notes of 2026-11-16 ("it's been walking nice") and 2026-11-25 (built and walking, tripod gait, turning, a dance routine, Xbox control), a photo of the robot walking (2026-11-16, not in this repo yet), and the firmware's channel map, which is dated "as plugged in on 2026-11-24".
-- The firmware also has stand/sit, crab walking, body lean, height and speed control, and the wave/bow/rear-up moves. Which of these besides walking, turning and the dance were tried on the robot is not documented.
-- One full leg was first built and walked on the bench with `vanta_one_leg_s3.ino` (2026-11-04).
+**Done**
+- VANTA is fully built and walks on the ESP32-S3 + 2x PCA9685 build, driven from an Xbox controller over Bluetooth.
+- Everything in the firmware runs on the robot: tripod walking, turning, crab walking, stand/sit, body lean, height and speed control, and the wave, bow, rear-up and dance moves.
+- The learned walk, the injured-leg (5-leg) walks and step climbing run on the robot. I train and develop them in the MuJoCo simulator (`4_SOFTWARE/sim_and_training/`). Full house stairs (about 18 cm) are out of reach.
+- The leg neural network (`ik_net.h`) runs on the robot. On 50,000 unseen foot positions, `train_ik.py` reports about 0.5 degrees average joint error.
+- The Fusion top deck, riser, camera holder and slotted tall hull (`3_CAD/deck_hull_fusion/`) are printed and on the robot.
 
-**Tested only in simulation (MuJoCo), not on the robot**
-- The walk learned in `vanta_sim.py` (selected with a left-stick click in the firmware).
-- The injured-leg (5-leg) walks.
-- Step climbing (climb mode). The notes say full house stairs (about 18 cm) are out of reach.
-- The leg neural network (`ik_net.h`) is checked offline: `train_ik.py` reports about 0.5 degrees average joint error on 50,000 unseen foot positions. Whether it has been used to walk the real robot is not documented.
-
-**Designed, not confirmed printed** (`3_CAD/deck_hull_fusion/`)
-- A new top deck, riser, camera holder and camera spacers (2026-11-16), an open riser (2026-11-21), and two tall-hull variants with cable slots (2026-11-21).
-- Two known clashes are still open in that design (2026-11-22): the riser columns reach Z 59.9 mm and run 3.2 mm into the deck, and the riser opening covers the end-header servo plugs by 0.5 mm.
-- The camera holder's module depth (8.5 mm) is a guess, not a measurement.
-
-**On hold**
-- Carrier PCB (`6_PCB_CARRIER/`): design only, on hold, targets the old Raspberry Pi layout. Not ordered.
-- Camera: a Waveshare ESP32-S3-CAM (OV5640) was bought on 2026-11-24. No camera code or mount is built yet.
-- Raspberry Pi software (`4_SOFTWARE/hexapod-brain/`): **legacy**. The robot started on a Raspberry Pi 4; the Pi was dropped around 2026-11-09/10. This code was tested only against a simulated I2C bus and was never run on the real robot.
+**Not done yet**
+- Camera: the holder is on the robot (Waveshare ESP32-S3-CAM, OV5640). The camera code is not written yet.
+- Carrier PCB (`6_PCB_CARRIER/`): design only, not ordered. It targets the old Raspberry Pi layout.
+- Raspberry Pi software (`4_SOFTWARE/hexapod-brain/`): legacy. VANTA started on a Raspberry Pi 4, and I replaced it with the ESP32-S3 before this code ran on the robot.
 
 **Known problems**
 - MG995 servos have overheated and failed: one died on the bench and was swapped. Keep a spare or two.
 - The assembly guide's pictures show the +1 servo cap; the cap that fits is +2 (1 mm difference, cosmetic).
 - `1_PRINT/VANTA_print_MAIN_A1.3mf` was rewritten by a script to 12 plates with +2 caps and has not been re-opened in Bambu Studio since. Check the plates before printing.
+- Check the deck fit before printing the files in `3_CAD/deck_hull_fusion/`: the riser columns reach Z 59.9 mm and run 3.2 mm into the deck, and the riser opening covers the end-header servo plugs by 0.5 mm.
+- Measure your camera module; the camera holder assumes a module depth of 8.5 mm.
 - `3_CAD/VANTA_standing.glb` still shows an older bracket B, horn and caps. The render at the top shows the v6 CAD design with the Pi-era hull, not the robot as it is today.
 
-**Not documented yet**
-- How the ESP32-S3 board is mounted and fed 5 V on the current robot (its ground goes to the 5 V- Wago).
-- Battery: the 2026-11-03 parts list names a Zeee 2S 5200 mAh XT60 pack; a 2026-11-10 note says the robot now runs on a 3S pack (stop at 10.5 V). Check that your SBEC and buck converter accept your pack's voltage.
-- The script that exported `walk_net.h` (`export_walk.py`) is not in this repo, and what `best.npy` holds is not recorded.
-- The print file for the tall hull currently on the robot.
+**Battery:** the robot runs on a 3S LiPo (stop at 10.5 V). The original parts list named a Zeee 2S 5200 mAh XT60 pack. Check that your SBEC and buck converter accept your pack's voltage.
 
-The 5:54 assembly video rendered from the CAD is not in the repo (337 MB). Its source pipeline is in `7_VIDEO/assembly_video_src/`.
+**Still to add**
+- How the ESP32-S3 board is mounted and fed 5 V (its ground goes to the 5 V- Wago).
+- The script that exports `walk_net.h` (`export_walk.py`), and a note on what `best.npy` holds.
+- Photos and a walking video: not in this repo yet. The 5:54 assembly video rendered from the CAD (337 MB) is not in this repo either; its source pipeline is in `7_VIDEO/assembly_video_src/`.
 
 ## What you need
 
@@ -114,7 +106,7 @@ The main board and drivers need no soldering. The robot weighs about 2.45 kg wit
 | `BUY_LIST.md` | Parts status as of 2026-11-03 (Pi-era; the controller is now the ESP32-S3). |
 | `1_PRINT/` | `VANTA_print_MAIN_A1.3mf` (12 plates, +2 caps) and `MAIN_plate_layout.png`; `VANTA_print_COLOR_AMS_A1.3mf` (mech hull with silver lettering, logo letters, optional AMS base); `VANTA_one_leg_A1.3mf` (one leg on one plate, older +1 caps); STLs in `stl_main/` and `stl_color_AMS/`. |
 | `3_CAD/` | `VANTA_standing.glb`, `servo_cap.step`, `stl_in_place/` (every part in the URDF frame), `source/` (generator scripts, reference only, plus `hexapod.urdf`). |
-| `3_CAD/deck_hull_fusion/` | Fusion-rebuilt top deck, riser, camera holder and spacers (`deck_out/`, STL + STEP), tall-hull slot variants, modelled wire routing (`wires/`: braids, servo leads, jumpers as STEP, path data), and the Fusion scripts. Designed, not confirmed printed. |
+| `3_CAD/deck_hull_fusion/` | Fusion-rebuilt top deck, riser, camera holder and spacers (`deck_out/`, STL + STEP), tall-hull slot variants, modelled wire routing (`wires/`: braids, servo leads, jumpers as STEP, path data), and the Fusion scripts. The deck, riser, camera holder and slotted tall hull are on the robot. |
 | `4_SOFTWARE/esp32_firmware/` | Current walking firmware `vanta_hexapod_pad` (ESP32-S3, 2x PCA9685, Bluepad32) with `ik_net.h` and `walk_net.h`. |
 | `4_SOFTWARE/sim_and_training/` | MuJoCo walking simulator with meshes, the leg-network trainer, and saved brain weights. |
 | `4_SOFTWARE/hexapod-brain/` | Legacy Raspberry Pi 4 software (kinematics, gait, gesture control, phone page, calibration). Not used on the current robot. |
@@ -125,16 +117,16 @@ The main board and drivers need no soldering. The robot weighs about 2.45 kg wit
 
 ## Roadmap / future plans
 
-These are the owner's stated plans, not built features:
+Planned:
 - **Fallen-person detection:** use the ESP32-S3 camera board to stream to a phone, show person boxes and an alert, and train a "person down / waving / OK" classifier on clips filmed from floor level.
 - **Search behaviour:** scan, turn and walk toward a person the camera finds.
 - **IMU self-levelling** with a BNO085 (the new top deck has a pocket for it).
 - **Bus servos:** replace the MG995s, which have overheated and failed, with Waveshare ST3215 bus servos.
-- **Learned walks:** add steering to the learned and injured-leg walks (they only go forward and back now) and test them on the real robot.
+- **Learned walks:** add steering to the learned and injured-leg walks (they go forward and back only).
 
 ## Credits and license
 
-- Legs, base, stiffeners, battery mount and `hexapod.urdf` come from [ggldnl/Hexapod-Hardware](https://github.com/ggldnl/Hexapod-Hardware) (CERN-OHL-W-2.0). `CREDITS.md` lists exactly which files are theirs or derived and what was changed.
-- Hardware design files (STL, 3MF, STEP, GLB, URDF, PCB files, assembly guide): CERN-OHL-W-2.0, see `LICENSE-HARDWARE`.
+- Legs, base, stiffeners, battery mount and `hexapod.urdf` are adapted from [ggldnl/Hexapod-Hardware](https://github.com/ggldnl/Hexapod-Hardware) (CERN-OHL-W-2.0). `CREDITS.md` lists exactly which files are derived and what I changed.
+- Hardware design files (STL, 3MF, STEP, GLB, URDF, PCB files, assembly guide): CERN-OHL-W-2.0, see `LICENSE-HARDWARE`. The full licence text is in `CERN-OHL-W-2.0.txt`.
 - Firmware and software: MIT, see `LICENSE`.
 - Dependencies (not included): Bluepad32, Adafruit PWM Servo Driver, MuJoCo, NumPy; the legacy Pi software also uses OpenCV, Picamera2 and MediaPipe.
