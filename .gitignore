@@ -21,6 +21,7 @@ fp-info-cache
 
 # Large rendered video (not in the repo)
 *.mp4
+!media/*.mp4
 
 # Working notes, not part of the project
 tasks/

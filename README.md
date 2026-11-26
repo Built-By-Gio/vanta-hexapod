@@ -6,6 +6,10 @@ Built by Gio ([Built-By-Gio](https://github.com/Built-By-Gio)).
 
 ![VANTA on the floor, fully built](media/vanta_walking.jpg)
 
+![VANTA walking on a concrete floor](media/vanta_walking.gif)
+
+*VANTA walking and turning on a concrete floor.* [Watch the full walking video (1:55)](media/vanta_walking.mp4)
+
 ![VANTA v6 CAD design](renders/vanta_v6.png)
 *The v6 CAD design (Pi-era hull).*
 
@@ -36,7 +40,8 @@ Built by Gio ([Built-By-Gio](https://github.com/Built-By-Gio)).
 **Still to add**
 - How the ESP32-S3 board is mounted and fed 5 V (its ground goes to the 5 V- Wago).
 - The script that exports `walk_net.h` (`export_walk.py`), and a note on what `best.npy` holds.
-- A walking video. The 5:54 assembly video rendered from the CAD (337 MB) is not in this repo because of its size; its source pipeline is in `7_VIDEO/assembly_video_src/`.
+
+The 5:54 assembly video rendered from the CAD (337 MB) is not in this repo because of its size; its source pipeline is in `7_VIDEO/assembly_video_src/`.
 
 ## Photos
 
@@ -124,6 +129,7 @@ The main board and drivers need no soldering. The robot weighs about 2.45 kg wit
 | `6_PCB_CARRIER/` | KiCad carrier board rev A: PCB, netlist, schematic PDF, STEP, Gerbers and JLC fab files. Design only, on hold, targets the old Pi layout. There is no editable schematic file, only the netlist and PDF. |
 | `7_VIDEO/assembly_video_src/` | Blender + Python pipeline for the assembly video (fonts not included; see its README). |
 | `renders/` | CAD renders of the v6 robot, hull, joint and parts. |
+| `media/` | Photos of the built robot, `vanta_walking.mp4` (1:55 walking video, no sound) and `vanta_walking.gif` (8-second preview). |
 
 ## Roadmap / future plans
 
