@@ -129,7 +129,7 @@ The main board and drivers need no soldering. The robot weighs about 2.45 kg wit
 | `6_PCB_CARRIER/` | KiCad carrier board rev A: PCB, netlist, schematic PDF, STEP, Gerbers and JLC fab files. Design only, on hold, targets the old Pi layout. There is no editable schematic file, only the netlist and PDF. |
 | `7_VIDEO/assembly_video_src/` | Blender + Python pipeline for the assembly video (fonts not included; see its README). |
 | `renders/` | CAD renders of the v6 robot, hull, joint and parts. |
-| `media/` | Photos of the built robot, `vanta_walking.mp4` (1:55 walking video, no sound) and `vanta_walking.gif` (8-second preview). |
+| `media/` | Photos of the built robot, `vanta_walking.mp4` (1:55 walking video) and `vanta_walking.gif` (8-second preview). |
 
 ## Roadmap / future plans
 
