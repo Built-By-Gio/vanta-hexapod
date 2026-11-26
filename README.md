@@ -4,7 +4,10 @@ VANTA is my 18-DOF six-legged walking robot: 6 legs with 3 MG995 servos each, pr
 
 Built by Gio ([Built-By-Gio](https://github.com/Built-By-Gio)).
 
-![VANTA v6 CAD render](renders/vanta_v6.png)
+![VANTA on the floor, fully built](media/vanta_walking.jpg)
+
+![VANTA v6 CAD design](renders/vanta_v6.png)
+*The v6 CAD design (Pi-era hull).*
 
 ## Status (2026-11-25)
 
@@ -26,14 +29,21 @@ Built by Gio ([Built-By-Gio](https://github.com/Built-By-Gio)).
 - `1_PRINT/VANTA_print_MAIN_A1.3mf` was rewritten by a script to 12 plates with +2 caps and has not been re-opened in Bambu Studio since. Check the plates before printing.
 - Check the deck fit before printing the files in `3_CAD/deck_hull_fusion/`: the riser columns reach Z 59.9 mm and run 3.2 mm into the deck, and the riser opening covers the end-header servo plugs by 0.5 mm.
 - Measure your camera module; the camera holder assumes a module depth of 8.5 mm.
-- `3_CAD/VANTA_standing.glb` still shows an older bracket B, horn and caps. The render at the top shows the v6 CAD design with the Pi-era hull, not the robot as it is today.
+- `3_CAD/VANTA_standing.glb` still shows an older bracket B, horn and caps. The CAD render near the top shows the v6 CAD design with the Pi-era hull, not the robot as it is today.
 
 **Battery:** the robot runs on a 3S LiPo (stop at 10.5 V). The original parts list named a Zeee 2S 5200 mAh XT60 pack. Check that your SBEC and buck converter accept your pack's voltage.
 
 **Still to add**
 - How the ESP32-S3 board is mounted and fed 5 V (its ground goes to the 5 V- Wago).
 - The script that exports `walk_net.h` (`export_walk.py`), and a note on what `best.npy` holds.
-- Photos and a walking video: not in this repo yet. The 5:54 assembly video rendered from the CAD (337 MB) is not in this repo either; its source pipeline is in `7_VIDEO/assembly_video_src/`.
+- A walking video. The 5:54 assembly video rendered from the CAD (337 MB) is not in this repo because of its size; its source pipeline is in `7_VIDEO/assembly_video_src/`.
+
+## Photos
+
+| | |
+|---|---|
+| ![Electronics plate during the build](media/electronics_plate_wip.jpg) | ![Power wiring with Wago connectors](media/power_wiring_wago.jpg) |
+| Electronics plate during the build | Power wiring with Wago connectors |
 
 ## What you need
 
