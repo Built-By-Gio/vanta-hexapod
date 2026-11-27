@@ -100,7 +100,7 @@ The main board and drivers need no soldering. The robot weighs about 2.45 kg wit
    | middle right | driver 1 ch 3 | driver 1 ch 4 | driver 1 ch 5 |
    | back right | driver 1 ch 6 | driver 1 ch 7 | driver 1 ch 8 |
 
-   The comment on line 2 of the sketch describes an older split; the table above is what the code uses. If your wiring differs, edit `BOARD` and `CH`.
+   If your wiring differs, edit `BOARD` and `CH`.
 6. **Check every servo before walking.** In the Arduino IDE pick board "ESP32S3 Dev Module" and enable "USB CDC On Boot". Upload `5_ELECTRONICS_TEST/esp32s3/servo_finder/servo_finder.ino` to see which channel each servo is on (Serial Monitor 115200, "No line ending"; type `2 6` to wiggle driver 2 channel 6). Then upload `5_ELECTRONICS_TEST/esp32s3/servo_check/servo_check.ino`, which wiggles all 18 joints in order using the same table (`n` next, `b` back, `r` repeat). If the Serial Monitor shows only `ESP-ROM:`, press RST.
 7. **Upload the walking firmware.** Open `4_SOFTWARE/esp32_firmware/vanta_hexapod_pad/vanta_hexapod_pad.ino` (keep `ik_net.h` and `walk_net.h` in the same folder) and upload it. Put the robot down sitting: battery on the floor, legs spread in a standing shape.
 8. **Calibrate the stand pose.** In the Serial Monitor (115200, "No line ending"): `1`-`6` pick a leg, `c`/`f`/`t` pick a joint, `+`/`-` nudge 10 µs, `]`/`[` nudge 50 µs, `n` flips a joint's direction, `p` prints the `HOME_US` and `SIGN` arrays. Paste them into the sketch and upload again.

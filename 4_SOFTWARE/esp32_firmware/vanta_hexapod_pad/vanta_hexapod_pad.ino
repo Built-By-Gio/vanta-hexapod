@@ -1,5 +1,5 @@
 // VANTA hexapod: ESP32-S3 + 2x PCA9685, driven by an Xbox Wireless controller (Bluepad32).
-// Driver 1 (Wire,  SDA 8 / SCL 9): left legs. Driver 2 (Wire1, SDA 4 / SCL 5): right legs + the front-left tibia.
+// Driver 1 (Wire,  SDA 8 / SCL 9): right legs, except the front-right tibia. Driver 2 (Wire1, SDA 4 / SCL 5): left legs + the front-right tibia.
 // Start with the robot sitting: battery on the floor, legs spread out in a standing shape.
 //
 // Controller:
